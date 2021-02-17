@@ -30,18 +30,15 @@ x1_max = max(x1)
 x2_max = max(x2)
 x3_max = max(x3)
 
-x01 = (x1_max + x1_min)/2
-x02 = (x2_max + x2_min)/2
-x03 = (x3_max + x3_min)/2
+# Dodatkove zavdannya
+x0 = [(x1_max + x1_min)/2, (x2_max + x2_min)/2, (x3_max + x3_min)/2]
+dx = [x1_max - x0[0], x2_max - x0[1], x3_max - x0[2]]
 
-dx_1 = x1_max - x01
-dx_2 = x2_max - x02
-dx_3 = x3_max - x03
 
 for i in range(len(x1)):
-    xn1.append((x1[i] - x01)/dx_1)
-    xn2.append((x2[i] - x02)/dx_2)
-    xn3.append((x3[i] - x03)/dx_3)
+    xn1.append((x1[i] - x0[0])/dx[0])
+    xn2.append((x2[i] - x0[1])/dx[1])
+    xn3.append((x3[i] - x0[2])/dx[2])
 
 y = []
 for i in range(len(x1)):
@@ -54,7 +51,7 @@ for i in range(len(x1)):
     xn2[i] = round(xn2[i], 3)
     xn3[i] = round(xn3[i], 3)
 
-y_etalon = a0 + a1*x01 + a2*x02 + a3*x03
+y_etalon = a0 + a1*x0[0] + a2*x0[1] + a3*x0[2]
 
 
 print(f"xn1 = {xn1}")
@@ -68,8 +65,8 @@ expression = []
 for i in range(len(y)):
     expression.append((y[i] - y_etalon)**2)
 
-print("\nx0 =", x01, x02, x03)
-print("dx =", dx_1, dx_2, dx_3)
+print("\nx0 =", x0[0], x0[1], x0[2])
+print("dx =", dx[0], dx[1], dx[2])
 
 print(f"Еталонне значення y = {y_etalon}")
 
