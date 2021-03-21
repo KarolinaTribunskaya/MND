@@ -1,7 +1,7 @@
 import random
 import math
 variant = 326
-m = 6
+m = 3
 y_max = (30 - variant) * 10
 y_min = (20 - variant) * 10
 
@@ -60,31 +60,45 @@ print(y)
 
 avg_y = average_y(y)
 print(avg_y)
+ruv = 0
+
+def func1(y):
+    global m
+    sigma_tetta = math.sqrt((2 * (2 * m - 2)) / (m * (m - 4)))
+
+    fuv = []
+    tetta = []
+    ruv = []
+
+    fuv.append(f_uv(dispersion(y)[0], dispersion(y)[1]))
+    fuv.append(f_uv(dispersion(y)[2], dispersion(y)[0]))
+    fuv.append(f_uv(dispersion(y)[2], dispersion(y)[1]))
+
+    tetta.append(((m - 2) / m) * fuv[0])
+    tetta.append(((m - 2) / m) * fuv[1])
+    tetta.append(((m - 2) / m) * fuv[2])
 
 
+    ruv.append(abs(tetta[0] - 1) / sigma_tetta)
+    ruv.append(abs(tetta[1] - 1) / sigma_tetta)
+    ruv.append(abs(tetta[2] - 1) / sigma_tetta)
 
+    r_kr = 2
+    return ruv
 
-sigma_tetta = math.sqrt((2 * (2 * m - 2)) / (m * (m - 4)))
+def check():
+    global ruv
+    global m
+    try:
+        ruv = func1(y)
+    except:
+        m += 1
+        check()
 
-fuv = []
-tetta = []
-ruv = []
+check()
 
-fuv.append(f_uv(dispersion(y)[0], dispersion(y)[1]))
-fuv.append(f_uv(dispersion(y)[2], dispersion(y)[0]))
-fuv.append(f_uv(dispersion(y)[2], dispersion(y)[1]))
-
-tetta.append(((m - 2) / m) * fuv[0])
-tetta.append(((m - 2) / m) * fuv[1])
-tetta.append(((m - 2) / m) * fuv[2])
-
-
-ruv.append(abs(tetta[0] - 1) / sigma_tetta)
-ruv.append(abs(tetta[1] - 1) / sigma_tetta)
-ruv.append(abs(tetta[2] - 1) / sigma_tetta)
 
 r_kr = 2
-
 
 for i in range(len(ruv)):
     if ruv[i] > r_kr:
