@@ -3,6 +3,7 @@ import math
 import random
 import numpy as np
 import xlrd
+import time
 
 
 variant = 326
@@ -190,6 +191,11 @@ naturalized_coefficients, normalized_coefficients = coefficients(m, naturalized_
 print("Рівняння регресії для нормованих факторів: y = {0} {1:+}*x1 {2:+}*x2 {3:+}*x3".format(*normalized_coefficients))
 print("\nРівняння регресії для натуралізованих факторів: y = {0:.3f} {1:+.3f}*x1 {2:+.3f}*x2 {3:+.3f}*x3".format(*naturalized_coefficients))
 
+a = time.time()
 importance = student_criteria(m, 4, y_table, factors_table)
+b = time.time()
+c = b - a
 factors_table = [np.array([1]+list(i)) for i in naturalized_factors_table]
 correctness = fisher_criteria(m, 4, 1, factors_table, y_table, naturalized_coefficients, importance)
+
+print(f"Час пошуку значимих коефіцієнтів складає {c} с")
