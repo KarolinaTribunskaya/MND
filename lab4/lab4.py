@@ -3,9 +3,12 @@ import copy
 import math
 from tabulate import tabulate
 from scipy.stats import f, t
+import time
 
+time_find_koef = 0
 
 def make_experiment(m=3):
+    global time_find_koef
     def dispersion(y_list, avg_y_list, m):
         Sy = []
         elem = 0
@@ -40,6 +43,7 @@ def make_experiment(m=3):
             make_experiment(4)
 
     def student_criterion(Sy, d):
+        global time_find_koef
         print("\n=================Тест Стьюдента=================\n")
         bettaList = [sum([Sy[i] * x0[0] for i in range(N)]) / N,
                      sum([Sy[i] * x1i[i] for i in range(N)]) / N,
@@ -52,12 +56,14 @@ def make_experiment(m=3):
         bettaList = [round(i, 2) for i in bettaList]
 
         tList = [bettaList[i] * S for i in range(N)]
-
+        time_start = time.time()
         for i in range(N):
             if tList[i] < t.ppf(q=0.975, df=f3):
                 bList[i] = 0
                 d -= 1
                 print('Виключити з рівняння коефіцієнт b' + str(i))
+        time_end = time.time()
+        time_find_koef = time_end - time_start
         print("\n=================Кінцеве рівняння=================")
         print(str_y().format(r(bList[0]), r(bList[1]), r(bList[2]), r(bList[3]), r(bList[4]), r(bList[5]), r(bList[6]),
                              r(bList[7])))
@@ -211,4 +217,9 @@ def make_experiment(m=3):
     fisher_criterion(d)
 
 
-make_experiment()
+n = 100
+for i in range(n):
+    make_experiment()
+
+print()
+print("Середній час пошуку значимих коефіцієнтів при виконанні програми 100 разів: {} с".format(float(time_find_koef/n)))
