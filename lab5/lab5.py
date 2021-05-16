@@ -2,6 +2,7 @@ import random
 import numpy as np
 from scipy.stats import f, t
 from sklearn import linear_model
+import time
 
 
 m = 3
@@ -87,7 +88,8 @@ print("Рівняння регресії зі знайденими коефіц�
       " {}*x2x3 + {}*x1x2x3 {}*x1^2 + {}*x2^2 + {}*x3^2".format(b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7],
                                                                 b[8],
                                                                 b[9], b[10]))
-
+time1 = 0
+time_a1 = time.perf_counter()
 print("Перевірка за критерієм Кохрена")
 print("Середні значення відгуку за рядками:", "\n", +Y_average[0], Y_average[1], Y_average[2], Y_average[3],
       Y_average[4], Y_average[5], Y_average[6], Y_average[7])
@@ -108,6 +110,11 @@ if Gp < Gt:
 else:
     print("Дисперсія неоднорідна")
 
+time_b1 = time.perf_counter()
+time1 = time_b1 - time_a1
+
+time2 = 0
+time_a2 = time.perf_counter()
 # критерій Стьюдента
 print(" Перевірка значущості коефіцієнтів за критерієм Стьюдента")
 sb = sum(dispersions) / len(dispersions)
@@ -143,6 +150,11 @@ for i in range(n):
                 + res[5] * x1x3_norm[i] + res[6] * x2x3_norm[i] + res[7] * x1x2x3_norm[i])
 print("Значення з отриманими коефіцієнтами:\n", y_st)
 
+time_b2 = time.perf_counter()
+time2 = time_b2 - time_a2
+
+time3 = 0
+time_a3 = time.perf_counter()
 # критерій Фішера
 print("\nПеревірка адекватності за критерієм Фішера\n")
 Sad = m * sum([(y_st[i] - Y_average[i]) ** 2 for i in range(n)]) / (n - d)
@@ -154,3 +166,11 @@ if Fp < f.ppf(q=0.95, dfn=F4, dfd=F3):
 else:
     print("Рівняння регресії неадекватне при рівні значимості 0.05")
 
+
+time_b3 = time.perf_counter()
+time3 = time_b3 - time_a3
+
+print()
+print(f"Час виконання першої статистичної перевірки {time1}c")
+print(f"Час виконання другої статистичної перевірки {time2}c")
+print(f"Час виконання третьої статистичної перевірки {time3}c")
