@@ -182,6 +182,12 @@ for j in range(11):
         coefs1.append(beta[j])
 print("Значущі коефіцієнти регресії:", [round(i, 3) for i in coefs1])
 print("Незначущі коефіцієнти регресії:", [round(i, 3) for i in coefs2])
+
+if len(coefs1) > len(coefs2):
+    print("Рівняння регресії адекватне, бо значущих коефіціентів регресії більше ніж незначущих")
+else:
+    print("Рівняння регресії неадекватне, бо значущих коефіціентів регресії не більше ніж незначущих")
+
 y_st = []
 for i in range(n):
     y_st.append(res[0] + res[1] * x1[i] + res[2] * x2[i] + res[3] * x3[i] + res[4] * x1x2[i] + res[5] *
